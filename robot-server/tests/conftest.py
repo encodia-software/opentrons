@@ -11,7 +11,7 @@ import pytest
 from starlette.testclient import TestClient
 from robot_server.service.app import app
 from robot_server.service.dependencies import get_hardware, verify_hardware
-from opentrons.hardware_control import API, HardwareAPILike
+from opentrons.hardware_control import API, HardwareAPILike, ThreadedAsyncLock
 from opentrons import config
 
 from opentrons.calibration_storage import delete
@@ -138,5 +138,6 @@ def set_up_index_file_temporary_directory(server_temp_directory):
 
 @pytest.fixture
 def session_manager(hardware) -> SessionManager:
-    return SessionManager(hardware,
-                          ProtocolManager())
+    return SessionManager(hardware=hardware,
+                          motion_lock=ThreadedAsyncLock(),
+                          protocol_manager=ProtocolManager())
