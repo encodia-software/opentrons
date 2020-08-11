@@ -49,22 +49,22 @@ class _Worker:
 
     async def handle_cancel(self):
         """Cancel a running protocol"""
-        self._protocol_runner.cancel()
+        await self._loop.run_in_executor(None, self._protocol_runner.cancel)
 
     async def handle_resume(self):
         """Resume running"""
-        self._protocol_runner.resume()
+        await self._loop.run_in_executor(None, self._protocol_runner.resume)
 
     async def handle_pause(self):
         """Pause the currently running protocol"""
-        self._protocol_runner.pause()
+        await self._loop.run_in_executor(None, self._protocol_runner.pause)
 
     async def close(self):
         """Shutdown the worker. Cancel run and terminate worker task"""
         # Kill the command task
         await self._set_directive(WorkerDirective.terminate)
         # Kill the protocol
-        self._protocol_runner.cancel()
+        await self._loop.run_in_executor(None, self._protocol_runner.cancel)
         # Wait for run task to finish
         await self._async_command_task
 
