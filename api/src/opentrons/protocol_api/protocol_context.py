@@ -9,7 +9,7 @@ from opentrons.hardware_control import (SynchronousAdapter, modules,
                                         API, ExecutionManager)
 from opentrons.config import feature_flags as fflags
 from opentrons.commands import CommandPublisher
-from opentrons.protocol_api.protocol_context_interface import \
+from opentrons.protocol_api.inner.protocol_context_interface import \
     ProtocolContextInterface, ModuleTypes
 from opentrons.protocols.types import APIVersion, Protocol
 from .labware import (
